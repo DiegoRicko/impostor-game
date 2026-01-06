@@ -1,12 +1,22 @@
 <script setup lang="ts">
-import { useGameStore } from './stores/gameStore.ts'
+import { useGameStore } from './stores/gameStore'
 import SetupView from './views/SetupView.vue'
+import CategorySelectView from './views/CategorySelectView.vue'
+import RoleRevealView from './views/RoleRevealView.vue'
+import PlayingView from './views/PlayingView.vue'
+import VotingView from './views/VotingView.vue'
+import EndView from './views/EndView.vue'
 
 const store = useGameStore()
 </script>
 
 <template>
   <SetupView v-if="store.phase === 'SETUP'" />
+  <CategorySelectView v-if="store.phase === 'CATEGORY_SELECT'" />
+  <RoleRevealView v-if="store.phase === 'ROLE_REVEAL'" />
+  <PlayingView v-if="store.phase === 'PLAYING'" />
+  <VotingView v-if="store.phase === 'VOTING'" />
+  <EndView v-if="store.phase === 'END'" />
 </template>
 
 
