@@ -1,7 +1,12 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useGameStore } from '../stores/gameStore'
 
 const store = useGameStore()
+
+const startingPlayer = computed(() => {
+  return store.players.find(p => p.id === store.startingPlayerId)
+})
 </script>
 
 <template>
@@ -14,7 +19,10 @@ const store = useGameStore()
     </div>
 
     <p class="instruction">Describan la palabra sin decirla…</p>
-    <p class="hint">El impostor debe intentar adivinar</p>
+    <p v-if="startingPlayer" class="starting-player">
+      <strong>{{ startingPlayer.name }}</strong> comienza
+    </p>
+    <p class="hint">El impostor debe intentar mezclarse</p>
   </div>
 </template>
 
@@ -88,6 +96,23 @@ const store = useGameStore()
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
+.starting-player {
+  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.95);
+  text-align: center;
+  margin-bottom: 0.5rem;
+  padding: 0.8rem 1.5rem;
+  background: rgba(255, 255, 255, 0.15);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+}
+
+.starting-player strong {
+  color: #3498db;
+  font-weight: 700;
+}
+
 .hint {
   font-size: 1.2rem;
   color: rgba(255, 255, 255, 0.7);
@@ -123,6 +148,11 @@ const store = useGameStore()
     font-size: 1.5rem;
   }
 
+  .starting-player {
+    font-size: 1.3rem;
+    padding: 0.6rem 1.2rem;
+  }
+
   .hint {
     font-size: 1rem;
   }
@@ -140,6 +170,11 @@ const store = useGameStore()
 
   .instruction {
     font-size: 1.3rem;
+  }
+
+  .starting-player {
+    font-size: 1.1rem;
+    padding: 0.5rem 1rem;
   }
 }
 </style>

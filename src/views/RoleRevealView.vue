@@ -17,13 +17,13 @@ const curtainRevealed = ref(false)
 const curtainPosition = ref(0) // Posición en píxeles desde arriba
 const isDragging = ref(false)
 const startY = ref(0)
-
-const REVEAL_THRESHOLD = 200 // Píxeles que necesita arrastrar para revelar
+const hasSeenRole = ref(false) // Marca si el jugador ya vio su rol
 
 // Resetear cortina cuando cambia de jugador
 watch(() => store.currentPlayerIndex, () => {
   curtainRevealed.value = false
   curtainPosition.value = 0
+  hasSeenRole.value = false
 })
 
 // Funciones de arrastre para mouse
@@ -45,7 +45,9 @@ const handleGlobalMouseMove = (e: MouseEvent) => {
   if (newPosition >= 0) {
     curtainPosition.value = newPosition
 
-    if (newPosition >= REVEAL_THRESHOLD && !curtainRevealed.value) {
+    // Marcar que vio su rol si levantó la cortina lo suficiente
+    if (newPosition > 150 && !hasSeenRole.value) {
+      hasSeenRole.value = true
       curtainRevealed.value = true
     }
   }
@@ -58,10 +60,8 @@ const handleGlobalMouseUp = () => {
   document.removeEventListener('mousemove', handleGlobalMouseMove)
   document.removeEventListener('mouseup', handleGlobalMouseUp)
 
-  // Si no llegó al threshold, volver a la posición inicial
-  if (curtainPosition.value < REVEAL_THRESHOLD) {
-    curtainPosition.value = 0
-  }
+  // Siempre hacer caer la cortina cuando se suelta
+  curtainPosition.value = 0
 }
 
 // Funciones de arrastre para touch (móvil)
@@ -84,7 +84,9 @@ const handleTouchMove = (e: TouchEvent) => {
   if (newPosition >= 0) {
     curtainPosition.value = newPosition
 
-    if (newPosition >= REVEAL_THRESHOLD && !curtainRevealed.value) {
+    // Marcar que vio su rol si levantó la cortina lo suficiente
+    if (newPosition > 150 && !hasSeenRole.value) {
+      hasSeenRole.value = true
       curtainRevealed.value = true
     }
   }
@@ -93,10 +95,8 @@ const handleTouchMove = (e: TouchEvent) => {
 const handleTouchEnd = () => {
   isDragging.value = false
 
-  // Si no llegó al threshold, volver a la posición inicial
-  if (curtainPosition.value < REVEAL_THRESHOLD) {
-    curtainPosition.value = 0
-  }
+  // Siempre hacer caer la cortina cuando se suelta
+  curtainPosition.value = 0
 }
 
 const handleNextPlayer = () => {
@@ -166,7 +166,7 @@ const handleNextPlayer = () => {
 
 .role-content {
   position: absolute;
-  top: 50%;
+  top: 60%;
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;

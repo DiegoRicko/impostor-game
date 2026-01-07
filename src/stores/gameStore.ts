@@ -18,6 +18,7 @@ export const useGameStore = defineStore('game', {
     timerId: null as number | null,
 
     votedPlayerId: null as number | null,
+    startingPlayerId: null as number | null,
 
   }),
 
@@ -67,6 +68,10 @@ export const useGameStore = defineStore('game', {
         if (this.currentPlayerIndex < this.players.length - 1) {
             this.currentPlayerIndex++
         } else {
+            // Seleccionar jugador aleatorio para comenzar
+            const randomIndex = Math.floor(Math.random() * this.players.length)
+            this.startingPlayerId = this.players[randomIndex]!.id
+
             this.phase = 'PLAYING'
             this.startTimer()
         }
@@ -109,6 +114,7 @@ export const useGameStore = defineStore('game', {
 
     resetForNextRound() {
         this.votedPlayerId = null
+        this.startingPlayerId = null
         this.currentPlayerIndex = 0
         this.players.forEach(p => (p.isImpostor = false))
         this.selectedWord = ''
