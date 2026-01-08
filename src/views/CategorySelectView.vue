@@ -10,6 +10,10 @@ const store = useGameStore()
     <h1 class="title">Selecciona una categoría</h1>
     <p class="subtitle">Elige el tema para esta ronda</p>
 
+    <button class="random-button" @click="store.selectRandomCategory()">
+      🎲 Categoría Aleatoria
+    </button>
+
     <div class="categories-grid">
       <button
         v-for="c in CATEGORIES"
@@ -40,9 +44,35 @@ const store = useGameStore()
 
 .subtitle {
   font-size: 1.2rem;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
   color: rgba(255, 255, 255, 0.8);
   text-align: center;
+}
+
+.random-button {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto 2rem;
+  padding: 1.2rem 2rem;
+  font-size: 1.4rem;
+  background: linear-gradient(135deg, #f39c12 0%, #e74c3c 100%);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 700;
+  box-shadow: 0 6px 20px rgba(243, 156, 18, 0.4);
+}
+
+.random-button:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 10px 30px rgba(243, 156, 18, 0.5);
+}
+
+.random-button:active {
+  transform: translateY(-1px) scale(1.01);
 }
 
 .categories-grid {
@@ -95,7 +125,13 @@ const store = useGameStore()
 
   .subtitle {
     font-size: 1rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .random-button {
+    padding: 1rem 1.5rem;
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
   }
 
   .categories-grid {
@@ -117,6 +153,11 @@ const store = useGameStore()
 @media (max-width: 480px) {
   .title {
     font-size: 1.8rem;
+  }
+
+  .random-button {
+    padding: 0.9rem 1.2rem;
+    font-size: 1.1rem;
   }
 
   .category-button {

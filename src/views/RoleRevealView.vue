@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useGameStore } from '../stores/gameStore'
+import { CATEGORIES } from '../data/categories'
 
 const store = useGameStore()
 
@@ -10,6 +11,10 @@ const player = computed(() => {
 
 const isLastPlayer = computed(() => {
   return store.currentPlayerIndex === store.players.length - 1
+})
+
+const selectedCategory = computed(() => {
+  return CATEGORIES.find(c => c.id === store.selectedCategoryId)
 })
 
 // Estado de la cortina
@@ -129,6 +134,7 @@ const handleNextPlayer = () => {
       @touchmove="handleTouchMove"
       @touchend="handleTouchEnd"
     >
+      <p v-if="selectedCategory" class="category-label">{{ selectedCategory.name }}</p>
       <h2 class="player-name">{{ player.name }}</h2>
       <p class="instruction">Arrastra hacia arriba para revelar tu rol</p>
       <div class="curtain-handle">
@@ -277,6 +283,16 @@ const handleNextPlayer = () => {
   }
 }
 
+.category-label {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0 0 0.5rem 0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 500;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
 .player-name {
   font-size: 3.5rem;
   color: white;
@@ -341,6 +357,11 @@ const handleNextPlayer = () => {
 
 /* Estilos responsive para móvil */
 @media (max-width: 768px) {
+  .category-label {
+    font-size: 1rem;
+    letter-spacing: 1.5px;
+  }
+
   .player-name {
     font-size: 2.5rem;
   }
@@ -379,6 +400,11 @@ const handleNextPlayer = () => {
 }
 
 @media (max-width: 480px) {
+  .category-label {
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+  }
+
   .player-name {
     font-size: 2rem;
   }

@@ -52,7 +52,9 @@ export const useGameStore = defineStore('game', {
         category.words[Math.floor(Math.random() * category.words.length)]!
 
       this.selectedWord = selected.word
-      this.selectedClue = selected.clue
+      // Seleccionar una pista aleatoria del array de pistas
+      const randomClueIndex = Math.floor(Math.random() * selected.clues.length)
+      this.selectedClue = selected.clues[randomClueIndex]!
 
       // Elegir impostor
       const impostorIndex = Math.floor(Math.random() * this.players.length)
@@ -62,6 +64,12 @@ export const useGameStore = defineStore('game', {
 
       this.currentPlayerIndex = 0
       this.phase = 'ROLE_REVEAL'
+    },
+
+    selectRandomCategory() {
+      const randomIndex = Math.floor(Math.random() * CATEGORIES.length)
+      const randomCategory = CATEGORIES[randomIndex]!
+      this.selectCategory(randomCategory.id)
     },
 
     nextPlayer() {
