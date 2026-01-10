@@ -109,7 +109,7 @@ const startingPlayer = computed(() => {
 }
 
 .starting-player strong {
-  color: #3498db;
+  color: #e1b514;
   font-weight: 700;
 }
 
