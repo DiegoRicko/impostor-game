@@ -115,12 +115,13 @@ const handleNextPlayer = () => {
     <div class="role-content">
       <div v-if="player.isImpostor" class="role-info impostor">
         <h3>🕵️ Eres el IMPOSTOR</h3>
-        <p class="clue">Pista: {{ store.selectedClue }}</p>
+        <p class="clue">Pista: {{ player.clue }}</p>
       </div>
 
       <div v-else class="role-info player">
         <h3>No eres el impostor</h3>
         <p class="word">Palabra secreta: <strong>{{ store.selectedWord }}</strong></p>
+        <p class="clue">Pista: {{ player.clue }}</p>
       </div>
     </div>
 

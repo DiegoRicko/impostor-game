@@ -43,6 +43,20 @@ const playerName = ref('')
       </div>
     </div>
 
+    <div class="impostor-selector">
+      <label class="impostor-label">Número de impostores:</label>
+      <div class="impostor-buttons">
+        <button
+          v-for="count in [1, 2, 3]"
+          :key="count"
+          :class="['impostor-count-btn', { active: store.impostorCount === count }]"
+          @click="store.setImpostorCount(count)"
+        >
+          {{ count }}
+        </button>
+      </div>
+    </div>
+
     <p v-if="store.players.length < 3" class="hint">
       Necesitas al menos 3 jugadores para comenzar
     </p>
@@ -179,6 +193,60 @@ const playerName = ref('')
   transform: scale(0.9);
 }
 
+.impostor-selector {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+}
+
+.impostor-label {
+  display: block;
+  text-align: center;
+  font-size: 1.2rem;
+  color: white;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.impostor-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.impostor-count-btn {
+  width: 60px;
+  height: 60px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.impostor-count-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: scale(1.1);
+}
+
+.impostor-count-btn.active {
+  background: rgba(231, 76, 60, 0.8);
+  border-color: rgba(231, 76, 60, 1);
+  box-shadow: 0 0 20px rgba(231, 76, 60, 0.5);
+  transform: scale(1.15);
+}
+
+.impostor-count-btn:active {
+  transform: scale(0.95);
+}
+
 .hint {
   text-align: center;
   color: rgba(255, 255, 255, 0.7);
@@ -242,6 +310,16 @@ const playerName = ref('')
 
   .player-name-text {
     font-size: 1.1rem;
+  }
+
+  .impostor-label {
+    font-size: 1.1rem;
+  }
+
+  .impostor-count-btn {
+    width: 55px;
+    height: 55px;
+    font-size: 1.3rem;
   }
 
   .start-button {

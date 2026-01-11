@@ -20,6 +20,8 @@ export const useGameStore = defineStore('game', {
     votedPlayerId: null as number | null,
     startingPlayerId: null as number | null,
 
+    impostorCount: 1, // Número de impostores (1-3)
+
   }),
 
   actions: {
@@ -56,10 +58,34 @@ export const useGameStore = defineStore('game', {
       const randomClueIndex = Math.floor(Math.random() * selected.clues.length)
       this.selectedClue = selected.clues[randomClueIndex]!
 
-      // Elegir impostor
-      const impostorIndex = Math.floor(Math.random() * this.players.length)
+      // Elegir múltiples impostores
+      const actualImpostorCount = Math.min(this.impostorCount, this.players.length - 1, 3)
+      const impostorIndices: number[] = []
+
+      // Seleccionar índices aleatorios únicos para los impostores
+      while (impostorIndices.length < actualImpostorCount) {
+        const randomIndex = Math.floor(Math.random() * this.players.length)
+        if (!impostorIndices.includes(randomIndex)) {
+          impostorIndices.push(randomIndex)
+        }
+      }
+
+      // Crear array de pistas disponibles (excluyendo la pista ya seleccionada)
+      const availableClues = selected.clues.filter((_, idx) => idx !== randomClueIndex)
+
+      // Asignar roles y pistas
       this.players.forEach((p, i) => {
-        p.isImpostor = i === impostorIndex
+        const isImpostor = impostorIndices.includes(i)
+        p.isImpostor = isImpostor
+
+        if (isImpostor && availableClues.length > 0) {
+          // Dar una pista diferente a cada impostor
+          const clueIndex = impostorIndices.indexOf(i) % availableClues.length
+          p.clue = availableClues[clueIndex]
+        } else if (!isImpostor) {
+          // Los jugadores normales reciben la pista principal
+          p.clue = this.selectedClue
+        }
       })
 
       this.currentPlayerIndex = 0
@@ -124,11 +150,20 @@ export const useGameStore = defineStore('game', {
         this.votedPlayerId = null
         this.startingPlayerId = null
         this.currentPlayerIndex = 0
-        this.players.forEach(p => (p.isImpostor = false))
+        this.players.forEach(p => {
+          p.isImpostor = false
+          p.clue = undefined
+        })
         this.selectedWord = ''
         this.selectedClue = ''
         this.selectedCategoryId = ''
         this.phase = 'CATEGORY_SELECT'
+    },
+
+    setImpostorCount(count: number) {
+      if (count >= 1 && count <= 3) {
+        this.impostorCount = count
+      }
     },
   },
 })

@@ -9,11 +9,13 @@ const votedPlayer = computed<Player | undefined>(() =>
   store.players.find((p: Player) => p.id === store.votedPlayerId)
 )
 
-const impostor = computed<Player | undefined>(() =>
-  store.players.find((p: Player) => p.isImpostor)
+const impostors = computed<Player[]>(() =>
+  store.players.filter((p: Player) => p.isImpostor)
 )
 
-const isWin = computed(() => votedPlayer.value?.id === impostor.value?.id)
+const isWin = computed(() =>
+  votedPlayer.value && impostors.value.some(imp => imp.id === votedPlayer.value?.id)
+)
 </script>
 
 <template>
@@ -38,9 +40,14 @@ const isWin = computed(() => votedPlayer.value?.id === impostor.value?.id)
           <span class="info-value">{{ votedPlayer.name }}</span>
         </div>
 
-        <div v-if="impostor" class="info-item impostor-reveal">
-          <span class="info-label">El impostor era:</span>
-          <span class="info-value">{{ impostor.name }}</span>
+        <div class="info-item impostor-reveal">
+          <span class="info-label">{{ impostors.length > 1 ? 'Los impostores eran:' : 'El impostor era:' }}</span>
+          <div class="impostors-list">
+            <span v-for="imp in impostors" :key="imp.id" class="info-value impostor-name">
+              {{ imp.name }}
+              <span v-if="imp.clue" class="impostor-clue">({{ imp.clue }})</span>
+            </span>
+          </div>
         </div>
       </div>
 
@@ -141,6 +148,26 @@ const isWin = computed(() => votedPlayer.value?.id === impostor.value?.id)
   font-size: 1.8rem;
   color: white;
   font-weight: bold;
+}
+
+.impostors-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-top: 0.5rem;
+}
+
+.impostor-name {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.impostor-clue {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: normal;
+  font-style: italic;
 }
 
 .next-round-button {
