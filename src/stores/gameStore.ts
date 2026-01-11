@@ -24,6 +24,20 @@ export const useGameStore = defineStore('game', {
 
   }),
 
+  getters: {
+    maxImpostors(): number {
+      return Math.max(1, this.players.length - 1)
+    },
+
+    impostorError(): string | null {
+      if (this.players.length === 0) return null
+      if (this.impostorCount >= this.players.length) {
+        return 'El número de impostores debe ser menor al total de jugadores'
+      }
+      return null
+    },
+  },
+
   actions: {
     addPlayer(name: string) {
       if (!name.trim()) return
@@ -37,10 +51,20 @@ export const useGameStore = defineStore('game', {
 
     removePlayer(id: number) {
       this.players = this.players.filter(p => p.id !== id)
+
+      // Ajustar automáticamente el número de impostores si es necesario
+      const maxImpostors = Math.max(1, this.players.length - 1)
+      if (this.impostorCount >= maxImpostors) {
+        this.impostorCount = Math.max(1, maxImpostors)
+      }
     },
 
     startGame() {
       if (this.players.length < 3) return
+      // Validar que el número de impostores sea válido
+      if (this.impostorCount >= this.players.length) {
+        this.impostorCount = Math.max(1, this.players.length - 1)
+      }
       this.phase = 'CATEGORY_SELECT'
     },
 

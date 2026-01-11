@@ -49,12 +49,22 @@ const playerName = ref('')
         <button
           v-for="count in [1, 2, 3]"
           :key="count"
-          :class="['impostor-count-btn', { active: store.impostorCount === count }]"
+          :class="['impostor-count-btn', {
+            active: store.impostorCount === count,
+            disabled: count >= store.players.length
+          }]"
+          :disabled="count >= store.players.length"
           @click="store.setImpostorCount(count)"
         >
           {{ count }}
         </button>
       </div>
+      <p v-if="store.impostorError" class="error-message">
+        ⚠️ {{ store.impostorError }}
+      </p>
+      <p v-else-if="store.players.length > 0" class="info-message">
+        Máximo de impostores: {{ store.maxImpostors }}
+      </p>
     </div>
 
     <p v-if="store.players.length < 3" class="hint">
@@ -63,7 +73,7 @@ const playerName = ref('')
 
     <button
       class="start-button"
-      :disabled="store.players.length < 3"
+      :disabled="store.players.length < 3 || !!store.impostorError"
       @click="store.startGame()"
     >
       Iniciar juego ({{ store.players.length }}/3)
@@ -247,6 +257,41 @@ const playerName = ref('')
   transform: scale(0.95);
 }
 
+.impostor-count-btn.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.error-message {
+  margin-top: 1rem;
+  padding: 0.8rem 1rem;
+  background: rgba(231, 76, 60, 0.2);
+  border: 2px solid rgba(231, 76, 60, 0.5);
+  border-radius: 10px;
+  color: #ff6b6b;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: center;
+  animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.info-message {
+  margin-top: 1rem;
+  padding: 0.6rem 1rem;
+  background: rgba(52, 152, 219, 0.15);
+  border: 1px solid rgba(52, 152, 219, 0.3);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
 .hint {
   text-align: center;
   color: rgba(255, 255, 255, 0.7);
@@ -320,6 +365,11 @@ const playerName = ref('')
     width: 55px;
     height: 55px;
     font-size: 1.3rem;
+  }
+
+  .error-message,
+  .info-message {
+    font-size: 0.85rem;
   }
 
   .start-button {

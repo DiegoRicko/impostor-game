@@ -45,7 +45,7 @@ const isWin = computed(() =>
           <div class="impostors-list">
             <span v-for="imp in impostors" :key="imp.id" class="info-value impostor-name">
               {{ imp.name }}
-              <span v-if="imp.clue" class="impostor-clue">({{ imp.clue }})</span>
+              <!-- <span v-if="imp.clue" class="impostor-clue">({{ imp.clue }})</span> -->
             </span>
           </div>
         </div>
