@@ -162,7 +162,7 @@ const handleNextPlayer = () => {
 
 <style scoped>
 .cancel-button {
-  position: absolute;
+  position: fixed;
   top: 2rem;
   left: 2rem;
   width: 56px;
