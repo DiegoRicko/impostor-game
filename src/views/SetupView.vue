@@ -82,25 +82,26 @@ const playerName = ref('')
           inputmode="numeric"
           pattern="[0-9]*"
           v-model.number= "store.roundDuration"
-          @blur="(isNaN(store.roundDuration) || !store.roundDuration) ? store.roundDuration = 60 : store.roundDuration"
           @keydown="store.blockInvalidKeys"
           @paste="store.blockInvalidPaste"
+          @keyup.enter="(isNaN(store.roundDuration) || !store.roundDuration || store.roundDuration < 60 || store.roundDuration > 300) ? store.roundDuration = 60 : store.roundDuration"
+          @focusout="(isNaN(store.roundDuration) || !store.roundDuration || store.roundDuration < 60 || store.roundDuration > 300) ? store.roundDuration = 60 : store.roundDuration"
         />
 
         <button class="arrow-btn" @click="store.roundDuration += 10" :disabled="store.roundDuration >= 300">+</button>
       </div>
       <span class="timer-unit">segundos</span>
-      <p v-if="isNaN(store.roundDuration) || store.roundDuration < 60 || store.roundDuration > 300" class="error-message">
-        ⚠️ Segundos no validos
-      </p>
       <p class="timer-hint">
         Entre {{ 60 }} y {{ 300 }} segundos
+      </p>
+      <p v-if="isNaN(store.roundDuration) || store.roundDuration < 60 || store.roundDuration > 300" class="error-message">
+        ⚠️ Segundos no validos
       </p>
     </div>
 
     <button
       class="start-button"
-      :disabled="store.players.length < 3 || !!store.impostorError || isNaN(store.roundDuration) || !store.roundDuration"
+      :disabled="store.players.length < 3 || !!store.impostorError || isNaN(store.roundDuration) || !store.roundDuration || store.roundDuration < 60 || store.roundDuration > 300"
       @click="store.startGame()"
     >
       Iniciar juego ({{ store.players.length }}/3)
