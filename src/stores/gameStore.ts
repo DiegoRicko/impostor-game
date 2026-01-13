@@ -26,7 +26,7 @@ export const useGameStore = defineStore('game', {
 
   getters: {
     maxImpostors(): number {
-      return Math.max(1, this.players.length - 1)
+      return Math.min(this.players.length - 1, 3)
     },
 
     impostorError(): string | null {

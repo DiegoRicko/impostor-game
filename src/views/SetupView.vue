@@ -111,7 +111,7 @@ const playerName = ref('')
 
 <style scoped>
 .setup-container {
-  max-width: 600px;
+  width: 600px;
   margin: 0 auto;
   padding: 2rem;
 }
@@ -448,6 +448,7 @@ const playerName = ref('')
 /* Responsive para móvil */
 @media (max-width: 768px) {
   .setup-container {
+    width: 312px;
     padding: 1.5rem 1rem;
   }
 
