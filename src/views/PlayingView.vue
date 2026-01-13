@@ -10,6 +10,10 @@ const startingPlayer = computed(() => {
 </script>
 
 <template>
+  <button class="cancel-button" @click="store.cancelRound()">
+    ↩
+  </button>
+
   <div class="playing-container">
     <h2 class="subtitle">Ronda en curso</h2>
 
@@ -120,6 +124,33 @@ const startingPlayer = computed(() => {
   font-style: italic;
 }
 
+.cancel-button {
+  width: 56px;
+  height: 56px;
+  padding: 1rem;
+  font-size: 1.4rem;
+  background: linear-gradient(135deg, #f39c12 0%, #e74c3c 100%);;
+  color: white;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 700;
+  box-shadow: 0 6px 20px rgba(52, 152, 219, 0.3);
+  display: block;
+  margin-right: auto;
+}
+
+.cancel-button:hover {
+  background: rgba(52, 152, 219, 1);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+}
+
+.cancel-button:active {
+  transform: translateY(0);
+}
+
 /* Responsive para móvil */
 @media (max-width: 768px) {
   .playing-container {
@@ -156,6 +187,13 @@ const startingPlayer = computed(() => {
   .hint {
     font-size: 1rem;
   }
+
+  .cancel-button {
+    width: 48px;
+    height: 48px;
+    font-size: 1rem;
+    padding: 0.5rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -175,6 +213,10 @@ const startingPlayer = computed(() => {
   .starting-player {
     font-size: 1.1rem;
     padding: 0.5rem 1rem;
+  }
+
+  .cancel-button {
+    font-size: 0.9rem;
   }
 }
 </style>

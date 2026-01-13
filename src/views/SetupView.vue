@@ -71,9 +71,36 @@ const playerName = ref('')
       Necesitas al menos 3 jugadores para comenzar
     </p>
 
+    <div class="timer-config">
+      <label class="timer-label">Duración de la ronda</label>
+
+      <div class="timer-input-wrapper">
+
+        <button class="arrow-btn" @click="store.roundDuration -= 10" :disabled="store.roundDuration <= 60">−</button>
+
+        <input class="timer-input" 
+          inputmode="numeric"
+          pattern="[0-9]*"
+          v-model.number= "store.roundDuration"
+          @blur="(isNaN(store.roundDuration) || !store.roundDuration) ? store.roundDuration = 60 : store.roundDuration"
+          @keydown="store.blockInvalidKeys"
+          @paste="store.blockInvalidPaste"
+        />
+
+        <button class="arrow-btn" @click="store.roundDuration += 10" :disabled="store.roundDuration >= 300">+</button>
+      </div>
+      <span class="timer-unit">segundos</span>
+      <p v-if="isNaN(store.roundDuration) || store.roundDuration < 60 || store.roundDuration > 300" class="error-message">
+        ⚠️ Segundos no validos
+      </p>
+      <p class="timer-hint">
+        Entre {{ 60 }} y {{ 300 }} segundos
+      </p>
+    </div>
+
     <button
       class="start-button"
-      :disabled="store.players.length < 3 || !!store.impostorError"
+      :disabled="store.players.length < 3 || !!store.impostorError || isNaN(store.roundDuration) || !store.roundDuration"
       @click="store.startGame()"
     >
       Iniciar juego ({{ store.players.length }}/3)
@@ -89,7 +116,7 @@ const playerName = ref('')
 }
 
 .title {
-  font-size: 3rem;
+  font-size: 2rem;
   margin-bottom: 0.5rem;
   color: white;
   text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
@@ -97,7 +124,7 @@ const playerName = ref('')
 }
 
 .subtitle {
-  font-size: 1.5rem;
+  font-size: 1rem;
   margin-bottom: 2rem;
   color: rgba(255, 255, 255, 0.9);
   text-align: center;
@@ -331,6 +358,92 @@ const playerName = ref('')
   box-shadow: none;
 }
 
+.timer-config {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.timer-label {
+  font-weight: 600;
+  color: #ddd;
+  font-size: 1rem;
+}
+
+.timer-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.timer-input {
+  width: 120px;
+  padding: 0.6rem;
+  font-size: 1.2rem;
+  text-align: center;
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.timer-input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.timer-input:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+.timer-unit {
+  font-size: 1rem;
+  color: #ffffff;
+}
+
+.timer-hint {
+  font-size: 0.8rem;
+  color: #ffffff;
+}
+
+.arrow-btn {
+  width: 40px;
+  height: 40px;
+  padding: 0.8rem;
+  align-content: center;
+  font-size: 1.1rem;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+
+.arrow-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: scale(1.05);
+}
+
+.arrow-btn:active {
+  transform: scale(0.95);
+}
+
+.arrow-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
 /* Responsive para móvil */
 @media (max-width: 768px) {
   .setup-container {
@@ -374,6 +487,18 @@ const playerName = ref('')
 
   .start-button {
     font-size: 1.2rem;
+  }
+
+  .timer-input {
+    font-size: 1rem;
+  }
+
+  .timer-unit {
+    font-size: 0.8rem;
+  }
+
+  .timer-hint {
+    font-size: 0.7rem;
   }
 }
 

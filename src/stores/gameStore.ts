@@ -36,6 +36,10 @@ export const useGameStore = defineStore('game', {
       }
       return null
     },
+
+    actualTimer(): number {
+      return this.roundDuration
+    },
   },
 
   actions: {
@@ -56,6 +60,37 @@ export const useGameStore = defineStore('game', {
       const maxImpostors = Math.max(1, this.players.length - 1)
       if (this.impostorCount >= maxImpostors) {
         this.impostorCount = Math.max(1, maxImpostors)
+      }
+    },
+
+    setTimer(time: number) {
+      const MIN = 60
+      const MAX = 300
+      this.roundDuration = Math.min(MAX, Math.max(MIN, time))
+    },
+
+    blockInvalidKeys(e: KeyboardEvent) {
+      const allowedKeys = [
+        'Backspace',
+        'Delete',
+        'ArrowLeft',
+        'ArrowRight',
+        'Tab',
+        'Enter'
+      ]
+
+      if (allowedKeys.includes(e.key)) return
+
+      // Solo números
+      if (!/^\d$/.test(e.key)) {
+        e.preventDefault()
+      }
+    },
+
+    blockInvalidPaste(e: ClipboardEvent) {
+      const pasted = e.clipboardData?.getData('text') ?? ''
+      if (!/^\d+$/.test(pasted)) {
+        e.preventDefault()
       }
     },
 
@@ -182,6 +217,38 @@ export const useGameStore = defineStore('game', {
         this.selectedClue = ''
         this.selectedCategoryId = ''
         this.phase = 'CATEGORY_SELECT'
+    },
+
+    mainMenu() {
+        this.votedPlayerId = null
+        this.startingPlayerId = null
+        this.currentPlayerIndex = 0
+        this.players.forEach(p => {
+          p.isImpostor = false
+          p.clue = undefined
+        })
+        this.selectedWord = ''
+        this.selectedClue = ''
+        this.selectedCategoryId = ''
+        this.phase = 'SETUP'
+    },
+
+    cancelRound() {
+        this.votedPlayerId = null
+        this.startingPlayerId = null
+        this.currentPlayerIndex = 0
+        this.players.forEach(p => {
+          p.isImpostor = false
+          p.clue = undefined
+        })
+        this.selectedWord = ''
+        this.selectedClue = ''
+        this.selectedCategoryId = ''
+        this.phase = 'CATEGORY_SELECT'
+        if (this.timerId) {
+            clearInterval(this.timerId)
+            this.timerId = null
+        }
     },
 
     setImpostorCount(count: number) {

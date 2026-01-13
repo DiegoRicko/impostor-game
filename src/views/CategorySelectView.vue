@@ -6,6 +6,10 @@ const store = useGameStore()
 </script>
 
 <template>
+  <button class="cancel-button" @click="store.mainMenu()">
+    ↩
+  </button>
+
   <div class="category-container">
     <h1 class="title">Selecciona una categoría</h1>
     <p class="subtitle">Elige el tema para esta ronda</p>
@@ -28,6 +32,33 @@ const store = useGameStore()
 </template>
 
 <style scoped>
+.cancel-button {
+  width: 56px;
+  height: 56px;
+  padding: 1rem;
+  font-size: 1.4rem;
+  background: linear-gradient(135deg, #f39c12 0%, #e74c3c 100%);;
+  color: white;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 700;
+  box-shadow: 0 6px 20px rgba(52, 152, 219, 0.3);
+  display: block;
+  margin-right: auto;
+}
+
+.cancel-button:hover {
+  background: rgba(52, 152, 219, 1);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+}
+
+.cancel-button:active {
+  transform: translateY(0);
+}
+
 .category-container {
   max-width: 800px;
   margin: 0 auto;
@@ -115,6 +146,13 @@ const store = useGameStore()
 
 /* Responsive para móvil */
 @media (max-width: 768px) {
+  .cancel-button {
+    width: 48px;
+    height: 48px;
+    font-size: 1rem;
+    padding: 0.5rem;
+  }
+
   .category-container {
     padding: 1.5rem 1rem;
   }

@@ -110,6 +110,10 @@ const handleNextPlayer = () => {
 </script>
 
 <template>
+  <button class="cancel-button" @click="store.resetForNextRound()">
+    ↩
+  </button>
+
   <div v-if="player" class="reveal-container">
     <!-- Contenido del rol (siempre visible debajo de la cortina) -->
     <div class="role-content">
@@ -121,7 +125,6 @@ const handleNextPlayer = () => {
       <div v-else class="role-info player">
         <h3>No eres el impostor</h3>
         <p class="word">Palabra secreta: <strong>{{ store.selectedWord }}</strong></p>
-        <p class="clue">Pista: {{ player.clue }}</p>
       </div>
     </div>
 
@@ -158,6 +161,35 @@ const handleNextPlayer = () => {
 </template>
 
 <style scoped>
+.cancel-button {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  width: 56px;
+  height: 56px;
+  padding: 1rem;
+  font-size: 1.4rem;
+  background: linear-gradient(135deg, #f39c12 0%, #e74c3c 100%);;
+  color: white;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 700;
+  box-shadow: 0 6px 20px rgba(52, 152, 219, 0.3);
+  z-index: 100;
+}
+
+.cancel-button:hover {
+  background: rgba(52, 152, 219, 1);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+}
+
+.cancel-button:active {
+  transform: translateY(0);
+}
+
 .reveal-container {
   position: fixed;
   top: 0;
@@ -358,6 +390,13 @@ const handleNextPlayer = () => {
 
 /* Estilos responsive para móvil */
 @media (max-width: 768px) {
+  .cancel-button {
+    width: 48px;
+    height: 48px;
+    font-size: 1rem;
+    padding: 0.5rem;
+  }
+
   .category-label {
     font-size: 1rem;
     letter-spacing: 1.5px;
