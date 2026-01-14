@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useGameStore } from './stores/gameStore'
-import SetupView from './views/SetupView.vue'
+import PlayersSetupView from './views/PlayersSetupView.vue'
+import GameConfigView from './views/GameConfigView.vue'
 import CategorySelectView from './views/CategorySelectView.vue'
 import RoleRevealView from './views/RoleRevealView.vue'
 import PlayingView from './views/PlayingView.vue'
@@ -11,7 +12,8 @@ const store = useGameStore()
 </script>
 
 <template>
-  <SetupView v-if="store.phase === 'SETUP'" />
+  <PlayersSetupView v-if="store.phase === 'SETUP'" />
+  <GameConfigView v-if="store.phase === 'GAME_CONFIG'" />
   <CategorySelectView v-if="store.phase === 'CATEGORY_SELECT'" />
   <RoleRevealView v-if="store.phase === 'ROLE_REVEAL'" />
   <PlayingView v-if="store.phase === 'PLAYING'" />

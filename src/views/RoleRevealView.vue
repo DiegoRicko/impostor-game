@@ -168,14 +168,15 @@ const handleNextPlayer = () => {
   width: 56px;
   height: 56px;
   padding: 1rem;
-  font-size: 1.4rem;
-  background: linear-gradient(135deg, #f39c12 0%, #e74c3c 100%);;
+  font-size: 1.1rem;
+  background: rgba(255, 255, 255, 0.2);
   color: white;
-  border: none;
+  border: 2px solid rgba(255, 255, 255, 0.3);
   border-radius: 15px;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-weight: 700;
+  font-weight: 600;
+  backdrop-filter: blur(10px);
   box-shadow: 0 6px 20px rgba(52, 152, 219, 0.3);
   z-index: 100;
 }

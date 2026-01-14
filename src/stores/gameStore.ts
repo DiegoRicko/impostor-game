@@ -94,6 +94,11 @@ export const useGameStore = defineStore('game', {
       }
     },
 
+    goToGameConfig() {
+      if (this.players.length < 3) return
+      this.phase = 'GAME_CONFIG'
+    },
+
     startGame() {
       if (this.players.length < 3) return
       // Validar que el número de impostores sea válido
@@ -101,6 +106,10 @@ export const useGameStore = defineStore('game', {
         this.impostorCount = Math.max(1, this.players.length - 1)
       }
       this.phase = 'CATEGORY_SELECT'
+    },
+
+    backToPlayerSetup() {
+      this.phase = 'SETUP'
     },
 
     selectCategory(categoryId: string) {
@@ -230,7 +239,7 @@ export const useGameStore = defineStore('game', {
         this.selectedWord = ''
         this.selectedClue = ''
         this.selectedCategoryId = ''
-        this.phase = 'SETUP'
+        this.phase = 'GAME_CONFIG'
     },
 
     cancelRound() {

@@ -7,6 +7,7 @@ export type Player = {
 
 export type GamePhase =
   | 'SETUP'
+  | 'GAME_CONFIG'
   | 'CATEGORY_SELECT'
   | 'ROLE_REVEAL'
   | 'PLAYING'
