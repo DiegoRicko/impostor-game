@@ -29,7 +29,7 @@ const playerName = ref('')
       </div>
 
       <!-- Contenedor scrolleable para la lista de jugadores -->
-      <div class="players-list-container">
+      <!-- <div class="players-list-container"> -->
         <div class="players-list">
           <div
             v-for="p in store.players"
@@ -45,7 +45,7 @@ const playerName = ref('')
             </button>
           </div>
         </div>
-      </div>
+      <!-- </div> -->
 
       <!-- Contenedor fijo para advertencias y mensajes -->
       <div class="messages-container">
